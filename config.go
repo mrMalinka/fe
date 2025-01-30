@@ -12,7 +12,12 @@ type Config struct {
 	AbsoluteKeybinds map[string]string `yaml:"absolute_keybinds"`
 
 	Options struct {
+		// whether to show files starting with `.`
+		// TODO: add app command to do this with a keybind
 		ShowHidden bool `yaml:"show_hidden"`
+
+		// how long the key press sequence should persist before resetting in ms
+		KeybindDuration int `yaml:"keybind_duration"`
 	} `yaml:"options"`
 }
 
@@ -37,10 +42,12 @@ func getDefaultConfig() Config {
 		},
 
 		Options: struct {
-			ShowHidden bool `yaml:"show_hidden"`
+			ShowHidden      bool `yaml:"show_hidden"`
+			KeybindDuration int  `yaml:"keybind_duration"`
 		}{
 			// TODO: actually implement showhidden = false
-			ShowHidden: true,
+			ShowHidden:      true,
+			KeybindDuration: 600,
 		},
 	}
 }

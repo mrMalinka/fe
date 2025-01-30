@@ -200,12 +200,14 @@ func (a *AppState) handleEvent(ev tcell.Event) {
 		a.currentKeySequence = append(a.currentKeySequence, key)
 
 		if a.sequenceClearTimer != nil {
-			a.sequenceClearTimer.Stop()
+			a.sequenceClearTimer.Stop() // if there a timer running, stop it
 		}
-		// TODO: move duration to config
-		a.sequenceClearTimer = time.AfterFunc(600*time.Millisecond, func() {
-			a.currentKeySequence = nil
-		})
+		a.sequenceClearTimer = time.AfterFunc( // make a new timer
+			time.Duration(a.config.Options.KeybindDuration)*time.Millisecond,
+			func() {
+				a.currentKeySequence = nil
+			},
+		)
 
 		action, exists = a.config.Keybinds[strings.Join(a.currentKeySequence, "+")]
 		if exists {
