@@ -27,6 +27,8 @@ func getDefaultConfig() Config {
 			"down":  "#select_down",
 			"left":  "#dir_backwards",
 			"right": "#dir_forwards",
+
+			"ctrl+s": "#quit_cd",
 		},
 
 		AbsoluteKeybinds: map[string]string{

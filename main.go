@@ -266,27 +266,15 @@ func (a *AppState) executeBuiltinKeybind(action string) {
 			a.sequenceClearTimer.Stop()
 		}
 		a.clearMessage()
-	case "cd_shell_into_wd":
-		dir := a.workingDir
-
-		if !filepath.IsAbs(dir) {
-			dir = filepath.Join(a.workingDir, dir)
-		}
-
-		// verify directory exists and is accessible
-		fi, err := os.Stat(dir)
+	case "quit_cd":
+		absPath, err := filepath.Abs(a.workingDir)
 		if err != nil {
-			fatalError(a.screen, "getting dir info", err)
-		}
-		if !fi.IsDir() {
-			fatalError(a.screen, "verifying dir info", fmt.Errorf("directory is not a directory"))
+			fatalError(a.screen, "getting absolute path", err)
 		}
 
-		// FIXME: doesnt work completely
-		// change directory in the actual process
-		if err := os.Chdir(dir); err != nil {
-			fatalError(a.screen, "changing dir in shell", err)
-		}
+		close(a.quit) // quit the app so the last thing printed is the cd command
+		// this will only work if the app is ran with `eval $(fe)`
+		fmt.Printf("cd %q\n", absPath)
 
 	default:
 		fatalError(a.screen, "executing builtin keybind", fmt.Errorf("action `%v` does not exist", action))
