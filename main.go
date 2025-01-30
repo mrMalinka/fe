@@ -119,8 +119,8 @@ func (a *AppState) draw() {
 	a.dirMutex.Lock()
 	defer a.dirMutex.Unlock()
 
+	// TODO: scrolloff logic
 	for i := 0; i < len(a.dirContents) && i < maxRows; i++ {
-		//for i, name := range a.dirContents {
 		var style tcell.Style
 		if a.selectedDir == i {
 			style = tcell.StyleDefault.Reverse(true)
@@ -134,7 +134,8 @@ func (a *AppState) draw() {
 	a.screenDirty = false
 }
 
-// rechecks the contents of the current working directory every couple seconds as to not show outdated data
+// rechecks the contents of the current working directory every couple seconds as to
+// not show outdated data (probably should redo this with some fs watcher thing?)
 func (a *AppState) dirContentsUpdater() {
 	ticker := time.NewTicker(1 * time.Second)
 	defer ticker.Stop()
@@ -180,6 +181,7 @@ func (a *AppState) eventPoller() {
 func (a *AppState) handleEvent(ev tcell.Event) {
 	switch ev := ev.(type) {
 	case *tcell.EventKey:
+		// keybind handling
 		var key string
 		if ev.Key() == tcell.KeyRune {
 			key = strings.ToLower(string(ev.Rune()))
