@@ -308,10 +308,10 @@ func (a *AppState) clearMessage() {
 	a.messageTimer = nil
 }
 
-func (a *AppState) requestUpdate(requestChanel chan struct{}) {
+func (a *AppState) requestUpdate(requestChannel chan struct{}) {
 	a.screenDirty = true
 	select {
-	case requestChanel <- struct{}{}:
+	case requestChannel <- struct{}{}:
 	default: // prevent blocking if already queued
 	}
 }
