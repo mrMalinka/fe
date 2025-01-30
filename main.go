@@ -336,7 +336,7 @@ func (a *AppState) formattedCommand(command string) string {
 		fatalError(a.screen, "formatting a custom command", err)
 	}
 
-	cmd := exec.Command("sh", "-c", formattedCommand)
+	cmd := exec.Command(formattedCommand)
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		a.setMessage(err.Error(), 2500)
