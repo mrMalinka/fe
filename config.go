@@ -8,11 +8,8 @@ import (
 )
 
 type Config struct {
-	Keybinds        map[string]string `yaml:"keybinds"`
-	BuiltinKeybinds map[string]string `yaml:"builtin_keybinds"`
-
-	AbsoluteKeybinds        map[string]string `yaml:"absolute_keybinds"`
-	AbsoluteBuiltinKeybinds map[string]string `yaml:"absolute_builtin_keybinds"`
+	Keybinds         map[string]string `yaml:"keybinds"`
+	AbsoluteKeybinds map[string]string `yaml:"absolute_keybinds"`
 
 	Options struct {
 		ShowHidden bool `yaml:"show_hidden"`
@@ -25,16 +22,16 @@ func getConfigPath() string {
 
 func getDefaultConfig() Config {
 	return Config{
-		BuiltinKeybinds: map[string]string{
-			"up":    "select_up",
-			"down":  "select_down",
-			"left":  "dir_backwards",
-			"right": "dir_forwards",
+		Keybinds: map[string]string{
+			"up":    "#select_up",
+			"down":  "#select_down",
+			"left":  "#dir_backwards",
+			"right": "#dir_forwards",
 		},
 
-		AbsoluteBuiltinKeybinds: map[string]string{
-			"q":   "quit",
-			"esc": "clear_key_sequence",
+		AbsoluteKeybinds: map[string]string{
+			"q":   "#quit",
+			"esc": "#clear_key_sequence",
 		},
 
 		Options: struct {

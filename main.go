@@ -187,13 +187,7 @@ func (a *AppState) handleEvent(ev tcell.Event) {
 			key = strings.ToLower(ev.Name())
 		}
 
-		action, exists := a.config.AbsoluteBuiltinKeybinds[key]
-		if exists {
-			a.executeBuiltinKeybind(action)
-			return
-		}
-
-		action, exists = a.config.AbsoluteBuiltinKeybinds[key]
+		action, exists := a.config.AbsoluteKeybinds[key]
 		if exists {
 			a.formattedShellCommand(action)
 			return
@@ -202,7 +196,6 @@ func (a *AppState) handleEvent(ev tcell.Event) {
 		if a.currentKeySequence != nil {
 			key = "+" + key
 		}
-
 		a.currentKeySequence = append(a.currentKeySequence, key)
 
 		if a.sequenceClearTimer != nil {
@@ -212,12 +205,6 @@ func (a *AppState) handleEvent(ev tcell.Event) {
 		a.sequenceClearTimer = time.AfterFunc(600*time.Millisecond, func() {
 			a.currentKeySequence = nil
 		})
-
-		action, exists = a.config.BuiltinKeybinds[strings.Join(a.currentKeySequence, "+")]
-		if exists {
-			a.currentKeySequence = nil
-			a.executeBuiltinKeybind(action)
-		}
 
 		action, exists = a.config.Keybinds[strings.Join(a.currentKeySequence, "+")]
 		if exists {
