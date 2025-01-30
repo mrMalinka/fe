@@ -188,11 +188,10 @@ func (a *AppState) handleEvent(ev tcell.Event) {
 		}
 
 		action, exists := a.config.AbsoluteKeybinds[key]
-		if exists {
-			if action != "" {
-				a.formattedCommand(action)
-				return
-			}
+		// check if action exists and hasnt been overriden
+		if exists && action != "" {
+			a.formattedCommand(action)
+			return
 		}
 
 		if a.currentKeySequence != nil {
