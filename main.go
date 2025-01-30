@@ -189,7 +189,7 @@ func (a *AppState) handleEvent(ev tcell.Event) {
 
 		action, exists := a.config.AbsoluteKeybinds[key]
 		if exists {
-			a.formattedShellCommand(action)
+			a.formattedCommand(action)
 			return
 		}
 
@@ -209,7 +209,7 @@ func (a *AppState) handleEvent(ev tcell.Event) {
 		action, exists = a.config.Keybinds[strings.Join(a.currentKeySequence, "+")]
 		if exists {
 			a.currentKeySequence = nil
-			a.formattedShellCommand(action)
+			a.formattedCommand(action)
 		}
 
 		//a.setMessage(strings.Join(a.currentKeySequence, "+"))
@@ -314,7 +314,7 @@ func (a *AppState) requestUpdate(requestChanel chan struct{}) {
 	}
 }
 
-func (a *AppState) formattedShellCommand(command string) string {
+func (a *AppState) formattedCommand(command string) string {
 	parts := strings.Fields(command)
 	if len(parts) == 0 {
 		fatalError(
