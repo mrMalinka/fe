@@ -213,8 +213,7 @@ func (a *AppState) handleEvent(ev tcell.Event) {
 			a.formattedCommand(action)
 		}
 
-		//a.setMessage(strings.Join(a.currentKeySequence, "+"))
-		a.setMessage(strings.Join(a.currentKeySequence, ""))
+		a.setMessage(strings.Join(a.currentKeySequence, ""), 800)
 	case *tcell.EventResize:
 		a.screen.Sync()
 		a.draw()
@@ -250,7 +249,7 @@ func (a *AppState) executeBuiltinKeybind(action string) {
 		}
 
 		if !info.IsDir() {
-			a.setMessage("not a directory")
+			a.setMessage("not a directory", 1500)
 			return
 		}
 
@@ -282,7 +281,7 @@ func (a *AppState) executeBuiltinKeybind(action string) {
 	}
 }
 
-func (a *AppState) setMessage(msg string) {
+func (a *AppState) setMessage(msg string, duration time.Duration) {
 	a.messageMutex.Lock()
 	defer a.messageMutex.Unlock()
 
@@ -294,7 +293,7 @@ func (a *AppState) setMessage(msg string) {
 	a.requestUpdate(a.screenRefreshRequest)
 
 	// TODO: move duration to config
-	a.messageTimer = time.AfterFunc(1*time.Second, func() {
+	a.messageTimer = time.AfterFunc(duration*time.Millisecond, func() {
 		a.clearMessage()
 	})
 }
@@ -336,7 +335,7 @@ func (a *AppState) formattedCommand(command string) string {
 	cmd := exec.Command("sh", "-c", formattedCommand)
 	output, err := cmd.CombinedOutput()
 	if err != nil {
-		a.setMessage(err.Error())
+		a.setMessage(err.Error(), 2500)
 	}
 
 	// do the builtin commands after the shell command
